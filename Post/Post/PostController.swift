@@ -51,9 +51,9 @@ class PostController {
             
             // sort by timestamp
             
-            let sortedArrayOfPosts = arrayOfPosts.sort {  $0.timestamp < $1.timestamp   }
+            //let sortedArrayOfPosts = arrayOfPosts.sort {  $0.timestamp < $1.timestamp   }
             
-            completion(sortedArrayOfPosts)
+            completion(arrayOfPosts)
             
             
         }
