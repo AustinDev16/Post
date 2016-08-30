@@ -11,7 +11,7 @@ import UIKit
 class PostListTableViewController: UITableViewController, PostControllerDelegate {
     
     func postsUpdated(posts: [Post]?) {
-        if let posts = posts {
+        if let _ = posts {
             self.tableView.reloadData()
         }
     }
@@ -26,6 +26,9 @@ class PostListTableViewController: UITableViewController, PostControllerDelegate
                 self.tableView.reloadData()
             })
         }
+        
+        tableView.estimatedRowHeight = 200
+        tableView.rowHeight = UITableViewAutomaticDimension
 
      
     }

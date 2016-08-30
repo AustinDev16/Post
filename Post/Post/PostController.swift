@@ -7,13 +7,13 @@
 //
 
 import Foundation
-protocol PostControllerDelegate {
+protocol PostControllerDelegate: class {
     func postsUpdated(posts: [Post]?)
 }
 
 class PostController {
     
-    var delegate: PostControllerDelegate?
+    weak var delegate: PostControllerDelegate?
     
     var posts: [Post]? {
         didSet{
