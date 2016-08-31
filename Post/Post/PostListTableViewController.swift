@@ -10,6 +10,78 @@ import UIKit
 
 class PostListTableViewController: UITableViewController, PostControllerDelegate {
     
+    @IBAction func refresehButtonTapped(sender: AnyObject) {
+        refreshPosts()
+    }
+    
+    @IBAction func composeNewPostTapped(sender: AnyObject) {
+        
+        let postAC = createAlertController()
+        
+        self.presentViewController(postAC, animated: true, completion: nil)
+        
+        
+    }
+    
+    func refreshPosts(){
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        postController.fetchPosts { (posts) in
+            dispatch_async(dispatch_get_main_queue(), {
+                self.postController.posts = posts
+                self.tableView.reloadData()
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            })
+        }
+    }
+    
+    
+    func postsUpdated(posts: [Post]?) {
+        if let _ = posts {
+            self.tableView.reloadData()
+        }
+    }
+
+    let postController = PostController()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+       refreshPosts()
+        
+        tableView.estimatedRowHeight = 200
+        tableView.rowHeight = UITableViewAutomaticDimension
+        // Test add
+        
+     
+    }
+
+ 
+
+    // MARK: - Table view data source
+
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return postController.posts?.count ?? 0
+    }
+
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("postCell", forIndexPath: indexPath)
+
+        guard let post = postController.posts?[indexPath.row] else {return UITableViewCell()}
+
+        cell.textLabel?.text = post.text
+        cell.detailTextLabel?.text = post.username
+        
+        return cell
+    }
+    
+
     func createAlertController() -> UIAlertController {
         let postAC = UIAlertController(title: "New post", message: nil, preferredStyle: .Alert)
         postAC.addTextFieldWithConfigurationHandler { (userName) in
@@ -68,74 +140,7 @@ class PostListTableViewController: UITableViewController, PostControllerDelegate
         return postAC
         
     }
-    
-    @IBAction func composeNewPostTapped(sender: AnyObject) {
-        
-        let postAC = createAlertController()
-        
-        self.presentViewController(postAC, animated: true, completion: nil)
-        
-        
-    }
-    
-    func refreshPosts(){
-        postController.fetchPosts { (posts) in
-            dispatch_async(dispatch_get_main_queue(), {
-                self.postController.posts = posts
-                self.tableView.reloadData()
-            })
-        }
-    }
-    
-    
-    func postsUpdated(posts: [Post]?) {
-        if let _ = posts {
-            self.tableView.reloadData()
-        }
-    }
 
-    let postController = PostController()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-       refreshPosts()
-        
-        tableView.estimatedRowHeight = 200
-        tableView.rowHeight = UITableViewAutomaticDimension
-        // Test add
-        
-     
-    }
-
- 
-
-    // MARK: - Table view data source
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return postController.posts?.count ?? 0
-    }
-
-    
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("postCell", forIndexPath: indexPath)
-
-        guard let post = postController.posts?[indexPath.row] else {return UITableViewCell()}
-
-        cell.textLabel?.text = post.text
-        cell.detailTextLabel?.text = post.username
-        
-        return cell
-    }
-    
-
-    
   
 
 }
