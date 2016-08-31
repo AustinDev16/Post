@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Posts-->
@@ -47,18 +46,16 @@
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <navigationItem key="navigationItem" title="Posts" id="zg3-eK-iJO">
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="refresh" id="N8c-BE-Yg7">
-                                <connections>
-                                    <action selector="refresehButtonTapped:" destination="0ye-VQ-Azq" id="ie5-i7-LQT"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="compose" id="F4U-r4-saB">
-                                <connections>
-                                    <action selector="composeNewPostTapped:" destination="0ye-VQ-Azq" id="0OH-yh-Fl0"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="N8c-BE-Yg7">
+                            <connections>
+                                <action selector="refresehButtonTapped:" destination="0ye-VQ-Azq" id="ie5-i7-LQT"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="F4U-r4-saB">
+                            <connections>
+                                <action selector="composeNewPostTapped:" destination="0ye-VQ-Azq" id="0OH-yh-Fl0"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Oq-pS-wx7" userLabel="First Responder" sceneMemberID="firstResponder"/>
