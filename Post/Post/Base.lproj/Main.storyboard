@@ -48,21 +48,18 @@
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <navigationItem key="navigationItem" title="Posts" id="zg3-eK-iJO">
                         <rightBarButtonItems>
-                            <barButtonItem systemItem="compose" id="F4U-r4-saB">
-                                <connections>
-                                    <action selector="composeNewPostTapped:" destination="0ye-VQ-Azq" id="0OH-yh-Fl0"/>
-                                </connections>
-                            </barButtonItem>
                             <barButtonItem systemItem="refresh" id="N8c-BE-Yg7">
                                 <connections>
                                     <action selector="refresehButtonTapped:" destination="0ye-VQ-Azq" id="ie5-i7-LQT"/>
                                 </connections>
                             </barButtonItem>
+                            <barButtonItem systemItem="compose" id="F4U-r4-saB">
+                                <connections>
+                                    <action selector="composeNewPostTapped:" destination="0ye-VQ-Azq" id="0OH-yh-Fl0"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
-                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="nFo-q8-bk9">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Oq-pS-wx7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
