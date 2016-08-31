@@ -25,16 +25,27 @@ struct Post {
         self.timestamp = timestamp
         self.identifier = identifier
     }
+    
+    let endPoint = []
+    
+    var jsonValue: [String: AnyObject] {
+        return ["username": self.username, "text": text, "timestamp": timestamp, "identifier": identifier.UUIDString]
+    }
+    
+    var jsonData: NSData?{
+        return (try? NSJSONSerialization.dataWithJSONObject(self.jsonValue, options: .PrettyPrinted))
+    }
 }
 
 extension Post {
     init?(dictionary: [String: AnyObject], identifier: String){
         guard let username = dictionary["username"] as? String,
         text = dictionary["text"] as? String,
-        timestamp = dictionary["timestamp"] as? NSTimeInterval
-        //identifier = identifier as? NSUUID
+        timestamp = dictionary["timestamp"] as? NSTimeInterval,
+        identifier = NSUUID(UUIDString: identifier)
             else {return nil}
         
-        self.init(username: username, text: text, timestamp: timestamp)
+        self.init(username: username, text: text, timestamp: timestamp, identifier: identifier)
     }
+    
 }

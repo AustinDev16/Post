@@ -29,7 +29,8 @@ class PostListTableViewController: UITableViewController, PostControllerDelegate
         
         tableView.estimatedRowHeight = 200
         tableView.rowHeight = UITableViewAutomaticDimension
-
+        // Test add
+        
      
     }
 

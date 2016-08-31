@@ -15,6 +15,8 @@ class PostController {
     
     weak var delegate: PostControllerDelegate?
     
+    let baseURL = "https://devmtn-post.firebaseio.com/"
+    
     var posts: [Post]? {
         didSet{
             if let delegate = delegate {
@@ -32,11 +34,29 @@ class PostController {
         }
     }
     
+    func addPost(name: String, text: String, completion: (success: Bool) -> Void){
+        
+        var newPost = Post(username: name, text: text, timestamp: NSDate().timeIntervalSince1970)
+        
+        
+         let url = NSURL(string: baseURL + "posts/" + newPost.identifier.UUIDString + ".json")!
+        
+        NetworkController.performRequestForURL(url, httpMethod: .Put, body: newPost.jsonData) { (data, error) in
+            var success = false
+            defer { completion(success: success) }
+            
+            if error != nil {
+                    success = true
+            } else {
+                success = false
+                }
+        }
+    }
     
     
     
     func fetchPosts(completion: ([Post]) -> Void) {
-        let baseURL = "https://devmtn-post.firebaseio.com/"
+        
         guard let endPoint = NSURL(string: baseURL + "posts.json") else {completion([]); return}
         
         
