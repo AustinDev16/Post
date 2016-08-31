@@ -10,6 +10,84 @@ import UIKit
 
 class PostListTableViewController: UITableViewController, PostControllerDelegate {
     
+    func createAlertController() -> UIAlertController {
+        let postAC = UIAlertController(title: "New post", message: nil, preferredStyle: .Alert)
+        postAC.addTextFieldWithConfigurationHandler { (userName) in
+            userName.placeholder = "Username"
+        }
+        postAC.addTextFieldWithConfigurationHandler { (post) in
+            post.placeholder = "Write your post here"
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .Cancel) { (_) in
+            postAC.resignFirstResponder()
+        }
+        
+        //        let clearPost = UIAlertAction(title: "Clear", style: .Destructive) { (_) in
+        //            guard let textFields = postAC.textFields else { return}
+        //            for field in textFields {
+        //                field.text = ""
+        //            }
+        //        }
+        
+        let add = UIAlertAction(title: "Publish", style: .Default) { (_) in
+            //check if fields are full
+            guard let textFields = postAC.textFields,
+                let username = textFields[0].text where username.characters.count > 0,
+                let body = textFields[1].text where body.characters.count > 0 else {
+                    let incompleteAlert = UIAlertController(title: "Try Again", message: "Be sure to include both a username and post.", preferredStyle: .Alert)
+                    let dismiss = UIAlertAction(title: "OK", style: .Default, handler: { (_) in
+                        //incompleteAlert.dismissViewControllerAnimated(true, completion: nil)
+                    })
+                    incompleteAlert.addAction(dismiss)
+                    self.presentViewController(incompleteAlert, animated: true, completion: nil)
+                    
+                    
+                    
+                    return /* alert */}
+            
+            // Proceed to add post
+            
+            self.postController.addPost(username, text: body, completion: { (success) in
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.refreshPosts()
+                    print("return from putting post")
+                })
+            })
+            
+            postAC.resignFirstResponder()
+            postAC.dismissViewControllerAnimated(true, completion: nil)
+            
+        }
+        
+        postAC.addAction(cancel)
+        // postAC.addAction(clearPost)
+        postAC.addAction(add)
+        
+        return postAC
+        
+    }
+    
+    @IBAction func composeNewPostTapped(sender: AnyObject) {
+        
+        let postAC = createAlertController()
+        
+        self.presentViewController(postAC, animated: true, completion: nil)
+        
+        
+    }
+    
+    func refreshPosts(){
+        postController.fetchPosts { (posts) in
+            dispatch_async(dispatch_get_main_queue(), {
+                self.postController.posts = posts
+                self.tableView.reloadData()
+            })
+        }
+    }
+    
+    
     func postsUpdated(posts: [Post]?) {
         if let _ = posts {
             self.tableView.reloadData()
@@ -21,11 +99,7 @@ class PostListTableViewController: UITableViewController, PostControllerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        postController.fetchPosts { (_) in
-            dispatch_async(dispatch_get_main_queue(), {
-                self.tableView.reloadData()
-            })
-        }
+       refreshPosts()
         
         tableView.estimatedRowHeight = 200
         tableView.rowHeight = UITableViewAutomaticDimension
