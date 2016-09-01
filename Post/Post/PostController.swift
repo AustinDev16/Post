@@ -9,6 +9,8 @@
 import Foundation
 class PostController{
     
+    weak var delegate: reloadFetchedPostsDelegate?
+    
     static let sharedController = PostController()
     
     let baseURL = NSURL(string: "https://devmtn-post.firebaseio.com/posts")
@@ -16,7 +18,11 @@ class PostController{
     
     var fetchedPosts: [Post] = [] {
         didSet{
-            // delegate method to reload any uiview elements
+            dispatch_async(dispatch_get_main_queue(), {
+                guard let delegate = self.delegate else{return}
+                
+                delegate.postsHaveBeenRefreshed()
+            })
         }
     }
     
