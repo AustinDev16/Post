@@ -24,7 +24,7 @@ struct Post {
     }
     
     var jsonDictionary: [String: AnyObject] {
-        return ["username": username, "text" : message, "timestamp": String(timestamp)]
+        return ["username": username, "text" : message, "timestamp": timestamp]
     }
     
     var jsonData: NSData? {
@@ -35,6 +35,18 @@ struct Post {
 extension Post{
     
     init?(dictionary: [String:AnyObject], identifier: String){
+        if let timestampTest = dictionary["timestamp"] as? String{
+            if timestampTest == "1472766975.9125" {
+                print("Found item")
+                print(dictionary["timestamp"] as? NSTimeInterval)
+            }
+        }
+        
+        if let username = dictionary["username"] as? String {
+            if username == "Ping Pong Table" {
+                print(identifier)
+            }
+        }
         guard let username = dictionary["username"] as? String,
             let message = dictionary["text"] as? String,
             let timestamp = dictionary["timestamp"] as? NSTimeInterval,

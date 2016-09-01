@@ -30,8 +30,20 @@ class PostsTableViewController: UITableViewController, reloadFetchedPostsDelegat
         PostController.sharedController.fetchPosts { (posts) in
             PostController.sharedController.fetchedPosts = posts
         }
+        
+        // add mock data
+//        
+//        PostController.sharedController.addPost("Forrest Gump", message: "Run Forrest, run!") {
+//            self.fetchPostsAfterPosting()
+//        }
 
         
+    }
+    
+    func fetchPostsAfterPosting(){
+        PostController.sharedController.fetchPosts({ (posts) in
+            PostController.sharedController.fetchedPosts = posts
+        })
     }
 
    // MARK: - Delegate methods

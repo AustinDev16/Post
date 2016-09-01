@@ -57,7 +57,9 @@ class PostController{
             
             let fetchedPosts = jsonDictionary.flatMap { Post(dictionary: $0.1, identifier: $0.0) }
             
-            completion(posts: fetchedPosts)
+            let sortedPosts = fetchedPosts.sort({ $0.timestamp > $1.timestamp})
+            print(sortedPosts.first?.timestamp)
+            completion(posts: sortedPosts)
             
             
         }
